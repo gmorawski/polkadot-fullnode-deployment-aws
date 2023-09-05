@@ -1,0 +1,14 @@
+---
+- name: Create Polkadot service file
+  template:
+    src: polkadot.service.j2
+    dest: "/etc/systemd/system/polkadot.service"
+  notify:
+    - Restart Polkadot service
+  tags: configure_service
+
+- name: Enable and start Polkadot service
+  systemd:
+    name: polkadot
+    enabled: yes
+    state: started

@@ -1,0 +1,13 @@
+---
+polkabot_binary_version: "v0.9.39-1" # Change the version to upgrade the polkadot binary version to v0.9.41 or v0.9.39-1
+url_list:
+  - "https://github.com/paritytech/polkadot/releases/download/{{ polkabot_binary_version }}/polkadot"
+  - "https://github.com/paritytech/polkadot/releases/download/{{ polkabot_binary_version }}/polkadot.sha256"
+
+polkadot_binary_download_url: "https://github.com/paritytech/polkadot/releases/download/{{ polkabot_binary_version }}/polkadot"
+polkadot_binary_checksum_url: "https://github.com/paritytech/polkadot/releases/download/{{ polkabot_binary_version }}/polkadot.sha256"
+polkadot_binary_download_path: "/usr/local/bin/polkadot"
+polkadot_service_user: "polkadot"
+polkadot_service_group: "polkadot"
+polkadot_service_path: "/opt/polkadot"
+

@@ -1,0 +1,15 @@
+[Unit]
+Description=Polkadot Node
+After=network.target
+
+[Service]
+User={{ polkadot_service_user }}
+Group={{ polkadot_service_group }}
+WorkingDirectory={{ polkadot_service_path }}
+ExecStart={{ polkadot_binary_download_path }} --config {{ polkadot_service_path }}/polkadot-config.toml
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=default.target

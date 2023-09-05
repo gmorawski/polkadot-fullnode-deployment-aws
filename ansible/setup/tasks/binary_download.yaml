@@ -1,0 +1,48 @@
+---
+- name: Create polkadot user
+  user:
+    name: polkadot
+    state: present
+    createhome: yes
+    shell: /bin/bash
+
+- name: Download Polkadot binary and checksum file
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: "/usr/local/bin/{{ item | basename }}"
+    force: true
+    mode: "0755"
+    owner: "polkadot"
+    group: "polkadot"
+  with_items:
+      - "{{ url_list }}"
+
+- name: Get SHA256 checksum of the downloaded Polkadot binary
+  shell: "sha256sum {{ polkadot_binary_download_path }} | cut -d ' ' -f 1"
+  register: checksum_binary_file
+  changed_when: false
+
+- name: Read content of SHA256 checksum from downloaded file polkadot.sha256
+  slurp:
+    src: "/usr/local/bin/{{ polkadot_binary_checksum_url | basename }}"
+  register: checksum_content
+  changed_when: false
+
+- name: Decode content
+  set_fact:
+    decoded_content: "{{ checksum_content.content | b64decode }}"
+  changed_when: false
+
+- name: Get checksum
+  set_fact:
+    checksum_value: "{{ decoded_content.split(' ')[0] }}"
+  changed_when: false
+
+- name: Display file content
+  debug:
+    var: checksum_value
+
+- name: Fail if checksum doesn't match
+  fail:
+    msg: "Checksum verification failed. The actual checksum ({{ actual_checksum_result.stdout }}) doesn't match the expected checksum ({{ expected_checksum }})."
+  when: checksum_binary_file.stdout != checksum_value

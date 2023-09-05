@@ -1,0 +1,3 @@
+---
+- include_tasks: binary_download.yaml
+- include_tasks: configure_service.yaml

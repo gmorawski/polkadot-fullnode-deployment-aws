@@ -1,0 +1,13 @@
+---
+- hosts: polkadotnodes
+  become: yes
+  serial: 1  # This specifies the number of servers to update simultaneously
+  tasks:
+    - name: Stop the polkadot service
+      systemd:
+        name: polkadot
+        state: stopped
+      
+    - name: Include setup role
+      include_role:
+        name: setup
